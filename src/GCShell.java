@@ -16,6 +16,7 @@ public class GCShell
             line = kb.nextLine();
 
             history.add(line);
+            //Hello
 
             switch (line)
             {
