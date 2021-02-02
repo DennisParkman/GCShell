@@ -5,10 +5,11 @@ import java.util.Scanner;
 
 public class GCShell
 {
+    private static final ArrayList<String> history = new ArrayList<>();
+    private static final Scanner kb = new Scanner(System.in);
+
     public static void main(String[] args)
     {
-        ArrayList<String> history = new ArrayList<>();
-        Scanner kb = new Scanner(System.in);
         String line;
 
         while(true)
@@ -17,52 +18,22 @@ public class GCShell
             System.out.print("gcshell>");
             line = kb.nextLine();
 
-            history.add(line);
-            //Hello
-
-            switch (line)
+            try
             {
-                case "quit":
-                    //if quit is entered kill loop
-                    kb.close();
+                if(!executeCommand(line))
+                {
                     return;
-                case "history":
-                    //if history entered, display all text entered into shell
-                    for (int i = 0; i < history.size(); i++)
-                    {
-                        System.out.print(i + 1 + ". " + history.get(i));
-                    }
-                    break;
-                case "!!":
-                    //if !! entered, bring up history, if no history display “No commands in history"
-                    if (history.isEmpty())
-                    {
-                        System.out.println("No commands in history");
-                    }
-                    else
-                    {
-                        System.out.println(history.get(history.size() - 1));
-                    }
-                    break;
-                default:
-                    try
-                    {
-                        ProcessBuilder p = new ProcessBuilder(line);
-                        p.inheritIO();
-                        p.directory(new File("bin"));
-                        p.start().waitFor();
-                    }
-                    catch(IOException e)
-                    {
-                        System.out.println("Command Not Found");
-                    }
-                    catch(InterruptedException e)
-                    {
-                        System.out.println("The command was interrupted");
-                        e.printStackTrace();
-                    }
-                    break;
+                }
             }
+            catch(IOException e)
+            {
+                System.out.println("Command Not Found");
+            }
+            catch(InterruptedException e)
+            {
+                System.out.println("The command was interrupted");
+            }
+
         }
         // create while loop that prints gcshell and asks for commands
         //in loop
@@ -73,5 +44,44 @@ public class GCShell
         //if !! entered, bring up history, if no history display “No commands in history"
         //if history entered, display all text entered into shell
 
+    }
+
+    public static boolean executeCommand(String line) throws IOException, InterruptedException
+    {
+        switch (line)
+        {
+            case "quit":
+                //if quit is entered kill loop
+                kb.close();
+                return false;
+            case "history":
+                history.add(line);
+                //if history entered, display all text entered into shell
+                for (int i = 0; i < history.size(); i++)
+                {
+                    System.out.print(i + 1 + ". " + history.get(i));
+                }
+                break;
+            case "!!":
+                //if !! entered, bring up history, if no history display “No commands in history"
+                if (history.isEmpty())
+                {
+                    System.out.println("No commands in history");
+                }
+                else
+                {
+                    executeCommand(history.get(history.size() - 1));
+                }
+                break;
+            default:
+                //history.add(line);
+                ProcessBuilder p = new ProcessBuilder(line);
+                p.inheritIO();
+                p.directory(new File("bin"));
+                p.start().waitFor();
+                history.add(line);
+                break;
+        }
+        return true;
     }
 }
