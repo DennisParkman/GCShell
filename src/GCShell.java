@@ -55,12 +55,20 @@ public class GCShell
                 kb.close();
                 return false;
             case "history":
-                history.add(line);
                 //if history entered, display all text entered into shell
-                for (int i = 0; i < history.size(); i++)
+                if (history.isEmpty())
                 {
-                    System.out.print(i + 1 + ". " + history.get(i));
+                    System.out.println("No commands in history");
                 }
+                else
+                {
+                    for (int i = 0; i < history.size(); i++)
+                    {
+                        System.out.println(i + 1 + ". " + history.get(i));
+                    }
+                }
+
+                history.add(line);
                 break;
             case "!!":
                 //if !! entered, bring up history, if no history display “No commands in history"
@@ -77,7 +85,7 @@ public class GCShell
                 //history.add(line);
                 ProcessBuilder p = new ProcessBuilder(line);
                 p.inheritIO();
-                p.directory(new File("bin"));
+                p.directory(new File("/bin"));
                 p.start().waitFor();
                 history.add(line);
                 break;
