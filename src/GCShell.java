@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -45,12 +47,18 @@ public class GCShell
                 default:
                     try
                     {
-                        Process p = new ProcessBuilder(line).start();
-                        p.waitFor();
+                        ProcessBuilder p = new ProcessBuilder(line);
+                        p.inheritIO();
+                        p.directory(new File("bin"));
+                        p.start().waitFor();
                     }
-                    catch(Exception e)
+                    catch(IOException e)
                     {
                         System.out.println("Command Not Found");
+                    }
+                    catch(InterruptedException e)
+                    {
+                        System.out.println("The command was interrupted");
                         e.printStackTrace();
                     }
                     break;
