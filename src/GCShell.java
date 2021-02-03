@@ -82,10 +82,8 @@ public class GCShell
                 }
                 break;
             default:
-                //history.add(line);
-                ProcessBuilder p = new ProcessBuilder(line);
+                ProcessBuilder p = new ProcessBuilder(line.split(" "));
                 p.inheritIO();
-                p.directory(new File("/bin"));
                 p.start().waitFor();
                 history.add(line);
                 break;
