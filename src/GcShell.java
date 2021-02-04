@@ -88,6 +88,7 @@ public class GcShell
                 return false;
             case "history":
                 //if history entered, display all text entered into shell
+                history.add(line);
                 if (history.isEmpty())
                 {
                     System.out.println("No commands in history");
@@ -99,8 +100,6 @@ public class GcShell
                         System.out.println(i + 1 + ". " + history.get(i));
                     }
                 }
-
-                history.add(line);
                 break;
             case "!!":
                 //if !! entered, bring up history, if no history display “No commands in history"
@@ -115,6 +114,8 @@ public class GcShell
                 break;
             case "filecopy": // c filecopy
                 break;
+            case "FileCopy":
+               break;
             case "": //Catches if no command was enterd
                 break;
             default: //try to run command through API, if command not found execption is thrown
