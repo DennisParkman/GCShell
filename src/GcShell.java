@@ -113,8 +113,6 @@ public class GcShell
                     executeCommand(history.get(history.size() - 1));
                 }
                 break;
-            case "java": // java filecopy
-                break;
             case "filecopy": // c filecopy
                 break;
             case "": //Catches if no command was enterd
