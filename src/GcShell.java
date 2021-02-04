@@ -1,42 +1,40 @@
-/*
-* @Author: Dennis Parkman and Jake Morris
-* Date: 2/02/21
-* Purpose: To create a custom shell that can run custom commands using API calls to other utilities.
-* 
-* How to Use: 
-* First, compile the program using:
-* javac GcShell.java
-* java GcShell
-*
-* Then, type in the regular commands as you would in bash or nano.
-* Additional specialty commands include:
-*
-* history - command that allows the user to see a log of their previous commands.
-* example: gcshell> history
-*
-* !! - command that allows the user to see and repeat their perviously used command.
-* example: gcshell> !!
-*
-* quit - command that allows the user to end their use of gcshell and return to normal shell program.
-* example: gcshell> quit
-* 
-* Academic Honesty Statement:
-*
-* We are the authors of this project, however we did use the following resources for our project:
-* https://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html
-* https://www.geeksforgeeks.org/file-getcanonicalpath-method-in-java-with-examples/
-* https://www.developer.com/java/data/understanding-java-process-and-java-processbuilder.html
-* 
-* 
-* I discussed this problem with:
-*/
-
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-public class GCShell
+/**
+ * @Author: Dennis Parkman and Jake Morris
+ * Date: 2/02/21
+ * Purpose: To create a custom shell that can run custom commands using API calls to other utilities.
+ *
+ * How to Use:
+ * First, compile the program using:
+ * javac GcShell.java
+ * java GcShell
+ *
+ * Then, type in the regular commands as you would in bash or nano.
+ * Additional specialty commands include:
+ *
+ * history - command that allows the user to see a log of their previous commands.
+ * example: gcshell> history
+ *
+ * !! - command that allows the user to see and repeat their perviously used command.
+ * example: gcshell> !!
+ *
+ * quit - command that allows the user to end their use of gcshell and return to normal shell program.
+ * example: gcshell> quit
+ *
+ * Academic Honesty Statement:
+ *
+ * We are the authors of this project, however we did use the following resources for our project:
+ * https://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html
+ * https://www.geeksforgeeks.org/file-getcanonicalpath-method-in-java-with-examples/
+ * https://www.developer.com/java/data/understanding-java-process-and-java-processbuilder.html
+ *
+ *
+ * I discussed this problem with:
+ * Nobody
+ */
+public class GcShell
 {
    //Declare and initalize necessay variable to take in and keep a history of commands
     private static final ArrayList<String> history = new ArrayList<>();
@@ -72,7 +70,7 @@ public class GCShell
         }
     }
     
-   /*
+   /**
     * This method takes in commands entered into 
     * 
     * @param line - a String containing the name of the process that needs to be executed 
@@ -81,7 +79,8 @@ public class GCShell
     */
     public static boolean executeCommand(String line) throws IOException, InterruptedException
     {
-        switch (line)
+        String firstArg = line.split(" ")[0];
+        switch (firstArg)
         {
             case "quit":
                 //if quit is entered kill loop
@@ -114,8 +113,12 @@ public class GCShell
                     executeCommand(history.get(history.size() - 1));
                 }
                 break;
-             case " ": //Catches if no command was enterd
-               break;
+            case "java": // java filecopy
+                break;
+            case "filecopy": // c filecopy
+                break;
+            case "": //Catches if no command was enterd
+                break;
             default: //try to run command through API, if command not found execption is thrown
                 ProcessBuilder p = new ProcessBuilder(line.split(" "));
                 p.inheritIO();
