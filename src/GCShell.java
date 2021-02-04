@@ -81,8 +81,10 @@ public class GCShell
                     executeCommand(history.get(history.size() - 1));
                 }
                 break;
+            case " ":
+                return false;
             default:
-                ProcessBuilder p = new ProcessBuilder(line.split(" "));
+                ProcessBuilder p = new ProcessBuilder(line);
                 p.inheritIO();
                 p.start().waitFor();
                 history.add(line);
