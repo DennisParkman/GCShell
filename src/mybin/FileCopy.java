@@ -62,7 +62,7 @@ public class FileCopy
         // Check for extra arguments
         if(args.length > index + 2)
         {
-            System.out.println("FileCopy: Invalid use. FileCopy [-r] source destination");
+            System.out.println("FileCopy: Invalid use. mybin.FileCopy [-r] source destination");
             return;
         }
 

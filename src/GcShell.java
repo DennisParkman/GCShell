@@ -1,6 +1,8 @@
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
+
 /**
  * @Author: Dennis Parkman and Jake Morris
  * Date: 2/02/21
@@ -79,7 +81,8 @@ public class GcShell
     */
     public static boolean executeCommand(String line) throws IOException, InterruptedException
     {
-        String firstArg = line.split(" ")[0];
+        String[] args = line.split(" ");
+        String firstArg = args[0];
         switch (firstArg)
         {
             case "quit":
@@ -113,11 +116,36 @@ public class GcShell
                 }
                 break;
             case "filecopy": // c filecopy
+                ArrayList<String> arrayList = new ArrayList<>();
+                Collections.addAll(arrayList, args);
+
+                //C:\Users\denni\IdeaProjects\GCShell\src\mybin
+                arrayList.set(0, new File(".").getCanonicalPath() + "/mybin/filecopy");
+
+                ProcessBuilder pb = new ProcessBuilder(arrayList);
+                pb.inheritIO();
+                pb.start().waitFor();
+                history.add(line);
                 break;
-            case "FileCopy":
-               break;
             case "": //Catches if no command was enterd
                 break;
+            case "java":
+                if(args[1].equals("FileCopy"))
+                {
+                    ArrayList<String> arraylist = new ArrayList<>();
+                    Collections.addAll(arraylist, args);
+
+                    //C:\Users\denni\IdeaProjects\GCShell\src\mybin
+                    arraylist.add(1, new File(".").getCanonicalPath() + "/mybin");
+                    arraylist.add(1, "-cp");
+
+
+                    ProcessBuilder p = new ProcessBuilder(arraylist);
+                    p.inheritIO();
+                    p.start().waitFor();
+                    history.add(line);
+                    break;
+                }
             default: //try to run command through API, if command not found execption is thrown
                 ProcessBuilder p = new ProcessBuilder(line.split(" "));
                 p.inheritIO();
